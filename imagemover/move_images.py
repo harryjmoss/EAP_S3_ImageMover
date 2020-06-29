@@ -23,14 +23,31 @@ def get_first_last_file_numbers(folderContents):
 
 
 def move_images(bucket,file_list,folder_list):
+    allFilesMoved=[[]]
     for folder in tqdm(folder_list):
+        filesMoved = []
         folderContents = get_folder_contents(file_list,folder)
         cover_file, end_file = get_first_last_file_numbers(folderContents)
         #move_eap_cover_image_to_end(bucket, cover_file,end_file)
 
+        # only get the images titles 1.jp2 - this is a temporary measure
+        if cover_file != "1":
+            continue
         # you just want the base name of the folder + the file numbers + .jp2
+        
         cover_file_key=folderContents[0].rsplit('/',1)[0]+'/'+cover_file+'.jp2'
         new_file_key=folderContents[0].rsplit('/',1)[0]+'/'+end_file+'.jp2'
+        try:
+            move_eap_cover_image_to_end(bucket,cover_file_key,new_file_key)
+        except Exception as e:
+            print("Exception: {} \n Attempted move old: {}\t new:{}".format(e,cover_file_key,new_file_key))
+            pass
+            
 
-        print(cover_file_key,end_file_key)
+        filesMoved.append(cover_file_key)
+        filesMoved.append(new_file_key)
+
+        allFilesMoved.append(filesMoved)
+        print(cover_file_key,new_file_key)
+    return allFilesMoved
 

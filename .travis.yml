@@ -1,0 +1,36 @@
+language: python
+jobs:
+  include:
+    - name: "Python 3.6 on Windows 10"
+      os: windows #windows 10
+      language: shell
+      before_install:
+        - choco install python --version 3.6.0
+        - python -m pip install --upgrade pip
+        - python -m pip install 'pytest>=5.4.3'
+        - python -m pip install pytest-cov
+        - python -m pip install codecov
+      env: PATH=/c/Python36:/c/Python36/Scripts:$PATH
+    - name: "Python 3.7 on Windows 10"
+      os: windows #windows 10
+      language: shell
+      before_install:
+        - choco install python --version 3.7.5
+        - python -m pip install --upgrade pip
+        - python -m pip install 'pytest>=5.4.3'
+        - python -m pip install pytest-cov
+        - python -m pip install codecov
+      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+    - name: "Python 3.8 on Windows 10"
+      os: windows #windows 10
+      language: shell
+      before_install:
+        - choco install python --version 3.8.0
+        - python -m pip install --upgrade pip
+        - python -m pip install 'pytest>=5.4.3'
+        - python -m pip install pytest-cov
+        - python -m pip install codecov
+      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
+install: 
+  - pip3 install -r requirements.txt # pip3 is OS independent
+script: pytest --cov=imagemover tests/
